@@ -1,87 +1,203 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📝 Форма для отправки</title>
-    <style>
-        /* Стили будут в следующем файле */
-    </style>
+    <title>📋 Форма заказа этикетки</title>
+    <link rel="stylesheet" href="style.css">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
     <div class="container">
-        <h1>📋 Форма отправки данных</h1>
-        
-        <form id="myForm">
-            <!-- Имя -->
-            <div class="form-group">
-                <label for="name">👤 Ваше имя *</label>
-                <input type="text" id="name" placeholder="Иван Иванов" required>
-            </div>
-            
-            <!-- Email -->
-            <div class="form-group">
-                <label for="email">📧 Email *</label>
-                <input type="email" id="email" placeholder="example@mail.ru" required>
-            </div>
-            
-            <!-- Телефон -->
-            <div class="form-group">
-                <label for="phone">📞 Телефон</label>
-                <input type="tel" id="phone" placeholder="+7 (999) 123-45-67">
-            </div>
-            
-            <!-- Сообщение -->
-            <div class="form-group">
-                <label for="message">💬 Сообщение</label>
-                <textarea id="message" rows="3" placeholder="Ваше сообщение..."></textarea>
-            </div>
-            
-            <!-- Получатель -->
-            <div class="form-group">
-                <label for="recipient">👥 Кому отправить *</label>
-                <input type="text" id="recipient" placeholder="@username или 123456789" required>
-                <small class="hint">
-                    🔍 Узнать свой ID можно у бота <strong>@userinfobot</strong>
-                </small>
-            </div>
-            
-            <!-- Выбор файлов -->
-            <div class="checkbox-group">
-                <div class="checkbox-item">
-                    <input type="checkbox" id="sendTxt" checked>
-                    <label for="sendTxt">📄 TXT файл</label>
-                </div>
-                <div class="checkbox-item">
-                    <input type="checkbox" id="sendCsv" checked>
-                    <label for="sendCsv">📊 CSV файл</label>
+        <div class="header">
+            <h1>📋 Задание на этикетку</h1>
+            <div class="subtitle">Заполните все поля для отправки задания дизайнеру</div>
+        </div>
+
+        <form id="orderForm">
+            <!-- 1. № Задания -->
+            <div class="form-section">
+                <div class="section-title">Основная информация</div>
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label for="taskNumber">1. № Задания *</label>
+                        <input type="text" id="taskNumber" 
+                               placeholder="Введите номер задания ИЗ ОТГРУЗОК"
+                               required>
+                    </div>
                 </div>
             </div>
-            
-            <!-- Кнопка отправки -->
-            <button type="submit" class="submit-btn">
-                <span class="btn-text">🚀 Отправить данные</span>
-                <span class="loading" style="display: none;">⏳ Отправка...</span>
-            </button>
-            
-            <!-- Статус -->
+
+            <!-- 2. Заказчик -->
+            <div class="form-section">
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label for="customer">2. Заказчик *</label>
+                        <input type="text" id="customer" 
+                               placeholder="Введите наименование заказчика"
+                               required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3-5. Технические параметры -->
+            <div class="form-section">
+                <div class="section-title">Технические параметры</div>
+                
+                <!-- 3. Вид этикетки -->
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label for="labelType">3. Вид этикетки *</label>
+                        <select id="labelType" required>
+                            <option value="" disabled selected>Выберите вид этикетки</option>
+                            <option value="Банка для микроволновой печи">Банка для микроволновой печи</option>
+                            <option value="Бутылка ПЭТ">Бутылка ПЭТ</option>
+                            <option value="Гибкая упаковка">Гибкая упаковка</option>
+                            <option value="Самоклеящаяся этикетка">Самоклеящаяся этикетка</option>
+                            <option value="Термоэтикетка">Термоэтикетка</option>
+                            <option value="Винная этикетка">Винная этикетка</option>
+                            <option value="Другое">Другое</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- 4-5. Материал и Ширина материала -->
+                <div class="form-row">
+                    <div class="form-group half-width">
+                        <label for="material">4. Материал *</label>
+                        <input type="text" id="material" 
+                               placeholder="PP60 Полипропилен белый акриловый клей W05 Fuzhou"
+                               required>
+                    </div>
+                    <div class="form-group half-width">
+                        <label for="materialWidth">5. Ширина материала (мм) *</label>
+                        <input type="number" id="materialWidth" 
+                               placeholder="Введите ширину основного материала"
+                               required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6-7. Тиснение -->
+            <div class="form-section">
+                <div class="section-title">Дополнительная обработка</div>
+                
+                <div class="form-row">
+                    <div class="form-group half-width">
+                        <label for="embossing">6. Тиснение</label>
+                        <input type="text" id="embossing" 
+                               placeholder="Пленка тиснение SB dots">
+                    </div>
+                    <div class="form-group half-width">
+                        <label for="embossingWidth">7. Ширина тиснения (мм)</label>
+                        <input type="number" id="embossingWidth" 
+                               placeholder="Автоматически"
+                               disabled>
+                    </div>
+                </div>
+
+                <!-- 8. Конгрев -->
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label for="congreve">8. Конгрев</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="congreve" value="Да" checked>
+                                <span class="radio-custom"></span>
+                                Да
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="congreve" value="Нет">
+                                <span class="radio-custom"></span>
+                                Нет
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 9-10. Лак -->
+            <div class="form-section">
+                <div class="form-row">
+                    <div class="form-group half-width">
+                        <label for="varnish">9. Лак</label>
+                        <input type="text" id="varnish" 
+                               placeholder="Вид лака">
+                    </div>
+                    <div class="form-group half-width">
+                        <label for="varnishType">10. Вид лака</label>
+                        <select id="varnishType" disabled>
+                            <option value="" disabled selected>Выберите вид лака</option>
+                            <option value="Глянцевый">Глянцевый</option>
+                            <option value="Матовый">Матовый</option>
+                            <option value="Тактильный">Тактильный</option>
+                            <option value="Голографический">Голографический</option>
+                            <option value="Другой">Другой</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- 11-12. Доп. лак -->
+                <div class="form-row">
+                    <div class="form-group half-width">
+                        <label for="additionalVarnish">11. Доп. лак</label>
+                        <input type="text" id="additionalVarnish" 
+                               placeholder="Дополнительный лак">
+                    </div>
+                    <div class="form-group half-width">
+                        <label for="additionalVarnishType">12. Вид доп. лака</label>
+                        <select id="additionalVarnishType" disabled>
+                            <option value="" disabled selected>Выберите вид лака</option>
+                            <option value="Глянцевый">Глянцевый</option>
+                            <option value="Матовый">Матовый</option>
+                            <option value="Тактильный">Тактильный</option>
+                            <option value="Голографический">Голографический</option>
+                            <option value="Другой">Другой</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 13-14. Ответственные -->
+            <div class="form-section">
+                <div class="section-title">Ответственные лица</div>
+                
+                <div class="form-row">
+                    <div class="form-group half-width">
+                        <label for="manager">13. Менеджер *</label>
+                        <input type="text" id="manager" 
+                               placeholder="Фамилия Имя"
+                               required>
+                    </div>
+                    <div class="form-group half-width">
+                        <label for="designerChatId">14. Дизайнер (ID чата) *</label>
+                        <input type="text" id="designerChatId" 
+                               placeholder="@username или 123456789"
+                               required>
+                        <div class="hint">ID чата для отправки задания</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Кнопки отправки -->
+            <div class="form-section">
+                <div class="form-row">
+                    <div class="button-group">
+                        <button type="button" class="btn-secondary" onclick="fillTestData()">
+                            📝 Тестовые данные
+                        </button>
+                        <button type="submit" class="btn-primary">
+                            📤 Отправить задание
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Статус отправки -->
             <div id="status" class="status hidden"></div>
         </form>
-        
-        <!-- Инструкция -->
-        <div class="instructions">
-            <h3>📌 Как это работает:</h3>
-            <ol>
-                <li>Заполните форму</li>
-                <li>Нажмите "Отправить данные"</li>
-                <li>Получатель получит файлы в Telegram</li>
-            </ol>
-        </div>
     </div>
-    
-    <script>
-        // JavaScript код будет здесь
-    </script>
+
+    <script src="script.js"></script>
 </body>
 </html>
