@@ -498,3 +498,76 @@ textarea {
     padding-bottom: 8px;
     border-bottom: 2px solid #dee2e6;
 }
+/* Стили для полей телефона с маской */
+.phone-input {
+    font-family: 'Roboto Mono', monospace, monospace;
+    letter-spacing: 0.5px;
+    background-image: none !important;
+}
+
+.phone-input:focus {
+    font-family: 'Roboto Mono', monospace, monospace;
+    letter-spacing: 0.5px;
+}
+
+/* Подсказки для полей телефона */
+.hint {
+    font-size: 12px;
+    color: #6c757d;
+    margin-top: 5px;
+    font-style: italic;
+    display: block;
+}
+
+/* Стиль для ошибок валидации телефона */
+.phone-input.error {
+    border-color: #dc3545 !important;
+    background-color: #fff5f5;
+    color: #dc3545;
+}
+
+.phone-input.error:focus {
+    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
+}
+
+/* Плейсхолдер для полей телефона */
+.phone-input::placeholder {
+    color: #adb5bd;
+    font-family: inherit;
+    letter-spacing: 0.5px;
+}
+
+/* Иконка телефона (опционально) */
+.phone-field-wrapper {
+    position: relative;
+}
+
+.phone-field-wrapper::before {
+    content: "📱";
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+    font-size: 16px;
+}
+
+.phone-field-wrapper .phone-input {
+    padding-left: 45px !important;
+}
+
+/* Для мобильных устройств */
+@media (max-width: 768px) {
+    .phone-input {
+        font-size: 16px !important; /* Увеличиваем для удобства ввода */
+    }
+    
+    .phone-field-wrapper::before {
+        left: 12px;
+        font-size: 14px;
+    }
+    
+    .phone-field-wrapper .phone-input {
+        padding-left: 40px !important;
+    }
+}
