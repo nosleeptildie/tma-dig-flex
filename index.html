@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📝 Форма для отправки</title>
+    <style>
+        /* Стили будут в следующем файле */
+    </style>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>📋 Форма отправки данных</h1>
+        
+        <form id="myForm">
+            <!-- Имя -->
+            <div class="form-group">
+                <label for="name">👤 Ваше имя *</label>
+                <input type="text" id="name" placeholder="Иван Иванов" required>
+            </div>
+            
+            <!-- Email -->
+            <div class="form-group">
+                <label for="email">📧 Email *</label>
+                <input type="email" id="email" placeholder="example@mail.ru" required>
+            </div>
+            
+            <!-- Телефон -->
+            <div class="form-group">
+                <label for="phone">📞 Телефон</label>
+                <input type="tel" id="phone" placeholder="+7 (999) 123-45-67">
+            </div>
+            
+            <!-- Сообщение -->
+            <div class="form-group">
+                <label for="message">💬 Сообщение</label>
+                <textarea id="message" rows="3" placeholder="Ваше сообщение..."></textarea>
+            </div>
+            
+            <!-- Получатель -->
+            <div class="form-group">
+                <label for="recipient">👥 Кому отправить *</label>
+                <input type="text" id="recipient" placeholder="@username или 123456789" required>
+                <small class="hint">
+                    🔍 Узнать свой ID можно у бота <strong>@userinfobot</strong>
+                </small>
+            </div>
+            
+            <!-- Выбор файлов -->
+            <div class="checkbox-group">
+                <div class="checkbox-item">
+                    <input type="checkbox" id="sendTxt" checked>
+                    <label for="sendTxt">📄 TXT файл</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="sendCsv" checked>
+                    <label for="sendCsv">📊 CSV файл</label>
+                </div>
+            </div>
+            
+            <!-- Кнопка отправки -->
+            <button type="submit" class="submit-btn">
+                <span class="btn-text">🚀 Отправить данные</span>
+                <span class="loading" style="display: none;">⏳ Отправка...</span>
+            </button>
+            
+            <!-- Статус -->
+            <div id="status" class="status hidden"></div>
+        </form>
+        
+        <!-- Инструкция -->
+        <div class="instructions">
+            <h3>📌 Как это работает:</h3>
+            <ol>
+                <li>Заполните форму</li>
+                <li>Нажмите "Отправить данные"</li>
+                <li>Получатель получит файлы в Telegram</li>
+            </ol>
+        </div>
+    </div>
+    
+    <script>
+        // JavaScript код будет здесь
+    </script>
+</body>
+</html>
