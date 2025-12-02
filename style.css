@@ -30,7 +30,7 @@ body {
 }
 
 .container {
-    max-width: 800px;
+    max-width: 900px;
     margin: 0 auto;
     background: white;
     border-radius: var(--border-radius);
@@ -68,13 +68,13 @@ body {
 
 .section-title {
     font-size: 18px;
-    font-weight: 600;
+    font-weight: 700;
     color: var(--primary-dark);
     margin-bottom: 20px;
     padding-bottom: 10px;
-    border-bottom: 2px solid var(--primary-color);
+    border-bottom: 3px solid var(--primary-color);
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 1px;
 }
 
 .form-row {
@@ -99,6 +99,10 @@ body {
 
 .form-group.half-width {
     flex: 0 0 calc(50% - 10px);
+}
+
+.form-group.third-width {
+    flex: 0 0 calc(33.333% - 14px);
 }
 
 .form-group label {
@@ -166,6 +170,7 @@ select {
     padding-right: 40px;
 }
 
+/* Радио кнопки - СТАНДАРТНЫЕ, но увеличенные */
 .radio-group {
     display: flex;
     gap: 25px;
@@ -175,48 +180,81 @@ select {
 .radio-label {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     cursor: pointer;
     font-weight: normal;
     text-transform: none;
     letter-spacing: normal;
     color: var(--text-dark);
+    font-size: 16px;
 }
 
+/* Стандартная радио-кнопка с увеличением */
 .radio-label input[type="radio"] {
-    display: none;
+    width: 18px; /* Увеличиваем размер */
+    height: 18px; /* Увеличиваем размер */
+    cursor: pointer;
+    accent-color: var(--primary-color); /* Цвет при выборе */
 }
 
-.radio-custom {
-    width: 20px;
-    height: 20px;
-    border: 2px solid var(--border-color);
-    border-radius: 50%;
-    position: relative;
-    transition: var(--transition);
+/* Увеличение на мобильных */
+@media (max-width: 768px) {
+    .radio-label input[type="radio"] {
+        width: 20px;
+        height: 20px;
+    }
+    .radio-label {
+        font-size: 17px;
+        gap: 15px;
+    }
 }
 
-.radio-custom::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0);
-    width: 10px;
-    height: 10px;
-    background: var(--primary-color);
-    border-radius: 50%;
-    transition: var(--transition);
+/* Чекбоксы - СТАНДАРТНЫЕ, но увеличенные */
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    font-weight: normal;
+    text-transform: none;
+    letter-spacing: normal;
+    color: var(--text-dark);
+    margin-top: 28px; /* Выравнивание с полями ввода */
+    font-size: 16px;
 }
 
-.radio-label input[type="radio"]:checked + .radio-custom {
+/* Стандартный чекбокс с увеличением */
+.checkbox-label input[type="checkbox"] {
+    width: 18px; /* Увеличиваем размер */
+    height: 18px; /* Увеличиваем размер */
+    cursor: pointer;
+    accent-color: var(--primary-color); /* Цвет при выборе */
+}
+
+/* Увеличение на мобильных */
+@media (max-width: 768px) {
+    .checkbox-label input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+    }
+    .checkbox-label {
+        font-size: 17px;
+        gap: 15px;
+    }
+}
+
+/* Для старых браузеров, которые не поддерживают accent-color */
+.radio-label input[type="radio"]:checked {
+    background-color: var(--primary-color);
     border-color: var(--primary-color);
 }
 
-.radio-label input[type="radio"]:checked + .radio-custom::after {
-    transform: translate(-50%, -50%) scale(1);
+.checkbox-label input[type="checkbox"]:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
 }
 
+/* Кнопки */
 .button-group {
     display: flex;
     gap: 15px;
@@ -266,6 +304,7 @@ select {
     transform: none !important;
 }
 
+/* Статус сообщения */
 .status {
     margin-top: 25px;
     padding: 20px;
@@ -311,6 +350,19 @@ select {
     font-style: italic;
 }
 
+/* Поля для нового штампа - компактное расположение */
+#newStampFields {
+    background: #f0f7ff;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #d1e3ff;
+    margin-top: 10px;
+}
+
+#newStampFields .form-group {
+    min-width: 120px;
+}
+
 /* Анимации */
 @keyframes fadeIn {
     from {
@@ -342,7 +394,8 @@ select {
         padding: 20px;
     }
     
-    .form-group.half-width {
+    .form-group.half-width,
+    .form-group.third-width {
         flex: 0 0 100%;
     }
     
@@ -359,6 +412,15 @@ select {
         flex-direction: column;
         gap: 15px;
     }
+    
+    #newStampFields .form-group {
+        min-width: 100%;
+        margin-bottom: 15px;
+    }
+    
+    #newStampFields .form-group:last-child {
+        margin-bottom: 0;
+    }
 }
 
 /* Стили для Telegram Web App */
@@ -369,4 +431,70 @@ select {
 .tg-mode .container {
     border-radius: 0;
     min-height: 100vh;
+}
+/* Стили для компактных радио-групп */
+.radio-group.compact {
+    display: flex;
+    gap: 15px;
+    margin-top: 8px;
+}
+
+.radio-group.compact .radio-label {
+    padding: 8px 15px;
+    font-size: 14px;
+}
+
+/* Стили для textarea */
+textarea {
+    min-height: 100px;
+    max-height: 300px;
+    resize: vertical;
+    font-family: inherit;
+    line-height: 1.5;
+}
+
+/* Стили для больших разделов */
+.form-section {
+    position: relative;
+}
+
+/* Индикатор обязательных полей */
+.form-group label.required::after {
+    content: " *";
+    color: #dc3545;
+    font-weight: bold;
+}
+
+/* Улучшенные подписи для полей */
+.form-group label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Подсказки под полями */
+.field-hint {
+    font-size: 12px;
+    color: #6c757d;
+    margin-top: 4px;
+    font-style: italic;
+    display: block;
+}
+
+/* Группировка связанных полей */
+.field-group {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+    margin-bottom: 15px;
+}
+
+.field-group .section-subtitle {
+    font-size: 16px;
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 15px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #dee2e6;
 }
