@@ -394,10 +394,11 @@
                 </div>
             </div>
 
-            <!-- 13-14. Ответственные -->
+            <!-- 13-18. Ответственные лица -->
             <div class="form-section">
                 <div class="section-title">Ответственные лица</div>
                 
+                <!-- Основной менеджер -->
                 <div class="form-row">
                     <div class="form-group half-width">
                         <label for="manager">13. Менеджер *</label>
@@ -406,11 +407,45 @@
                                required>
                     </div>
                     <div class="form-group half-width">
+                        <label for="managerPhone">15. Телефон менеджера</label>
+                        <input type="tel" id="managerPhone" 
+                               placeholder="+7 (___) ___-__-__"
+                               class="phone-input">
+                        <div class="hint">Формат: +7 (XXX) XXX-XX-XX</div>
+                    </div>
+                </div>
+
+                <!-- Второй менеджер -->
+                <div class="form-row">
+                    <div class="form-group half-width">
+                        <label for="manager2">16. Второй менеджер</label>
+                        <input type="text" id="manager2" 
+                               placeholder="Фамилия Имя">
+                    </div>
+                    <div class="form-group half-width">
+                        <label for="manager2Phone">17. Телефон второго менеджера</label>
+                        <input type="tel" id="manager2Phone" 
+                               placeholder="+7 (___) ___-__-__"
+                               class="phone-input">
+                        <div class="hint">Формат: +7 (XXX) XXX-XX-XX</div>
+                    </div>
+                </div>
+
+                <!-- Дизайнер -->
+                <div class="form-row">
+                    <div class="form-group half-width">
                         <label for="designerChatId">14. Дизайнер (ID чата) *</label>
                         <input type="text" id="designerChatId" 
                                placeholder="@username или 123456789"
                                required>
                         <div class="hint">ID чата для отправки задания</div>
+                    </div>
+                    <div class="form-group half-width">
+                        <label for="designerPhone">18. Телефон дизайнера</label>
+                        <input type="tel" id="designerPhone" 
+                               placeholder="+7 (___) ___-__-__"
+                               class="phone-input">
+                        <div class="hint">Формат: +7 (XXX) XXX-XX-XX</div>
                     </div>
                 </div>
             </div>
