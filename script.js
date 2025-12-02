@@ -1,63 +1,162 @@
 // Инициализация Telegram Web App
 let tg = null;
+let userData = null;
+
+// Инициализируем Telegram Web App если он доступен
 if (window.Telegram && Telegram.WebApp) {
     tg = Telegram.WebApp;
     
-    // Инициализируем приложение
+    // Инициализация
     tg.ready();
     tg.expand();
     
-    // Меняем цвет фона Telegram
+    // Получаем данные пользователя
+    userData = tg.initDataUnsafe?.user;
+    
+    // Настройка цветов
     tg.setBackgroundColor('#667eea');
     tg.setHeaderColor('#667eea');
     
-    // Добавляем кнопку закрытия
-    tg.MainButton.setText('Закрыть').show();
-    tg.MainButton.onClick(() => {
-        tg.close();
-    });
+    // Добавляем кнопку "Закрыть"
+    if (tg.platform !== 'unknown') {
+        tg.MainButton.setText('Закрыть').show();
+        tg.MainButton.onClick(() => {
+            tg.close();
+        });
+    }
+    
+    // Автозаполнение менеджера из данных Telegram
+    if (userData) {
+        const managerName = `${userData.first_name || ''} ${userData.last_name || ''}`.trim();
+        if (managerName) {
+            document.getElementById('manager').value = managerName;
+            document.getElementById('manager').readOnly = true;
+        }
+    }
 }
 
 // URL вашего Google Apps Script (ЗАМЕНИТЕ НА СВОЙ!)
-const API_URL = 'https://script.google.com/macros/s/AKfycbzH60XLGOaMjngBLlk5Iz5w7a4toekMBf7CabeFnQJVUhc59-QnBM8KTniOSbSy7NUGAA/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycbx_M9S7h5dh3aKZbyHqZ9ZJ_gXT1q40e6VnirI24HSk1Qk8NncugZkNHYJc-XbRi1kn/exec';
 
-// Элементы DOM
-const form = document.getElementById('myForm');
-const submitBtn = form.querySelector('.submit-btn');
-const btnText = submitBtn.querySelector('.btn-text');
-const loadingText = submitBtn.querySelector('.loading');
+// Элементы формы
+const orderForm = document.getElementById('orderForm');
 const statusDiv = document.getElementById('status');
 
-// Обработчик отправки формы
-form.addEventListener('submit', async function(e) {
+// Зависимые поля
+const embossingField = document.getElementById('embossing');
+const embossingWidthField = document.getElementById('embossingWidth');
+const varnishField = document.getElementById('varnish');
+const varnishTypeField = document.getElementById('varnishType');
+const additionalVarnishField = document.getElementById('additionalVarnish');
+const additionalVarnishTypeField = document.getElementById('additionalVarnishType');
+
+// Логика зависимых полей
+embossingField.addEventListener('input', function() {
+    if (this.value.trim()) {
+        embossingWidthField.disabled = false;
+        embossingWidthField.placeholder = 'Введите ширину тиснения';
+    } else {
+        embossingWidthField.disabled = true;
+        embossingWidthField.value = '';
+        embossingWidthField.placeholder = 'Автоматически';
+    }
+});
+
+varnishField.addEventListener('input', function() {
+    if (this.value.trim()) {
+        varnishTypeField.disabled = false;
+    } else {
+        varnishTypeField.disabled = true;
+        varnishTypeField.value = '';
+    }
+});
+
+additionalVarnishField.addEventListener('input', function() {
+    if (this.value.trim()) {
+        additionalVarnishTypeField.disabled = false;
+    } else {
+        additionalVarnishTypeField.disabled = true;
+        additionalVarnishTypeField.value = '';
+    }
+});
+
+// Автоматическое заполнение ширины тиснения (если нужно)
+embossingWidthField.addEventListener('focus', function() {
+    if (!this.value && embossingField.value) {
+        // Можно добавить логику автоматического расчета
+        // Например: this.value = document.getElementById('materialWidth').value;
+    }
+});
+
+// Обработка отправки формы
+orderForm.addEventListener('submit', async function(e) {
     e.preventDefault();
     
-    // Показываем загрузку
-    setLoading(true);
-    showStatus('⏳ Отправка данных...', 'info');
+    // Показываем статус загрузки
+    showStatus('📤 Отправка задания...', 'info');
     
     // Собираем данные формы
     const formData = {
-        name: document.getElementById('name').value.trim(),
-        email: document.getElementById('email').value.trim(),
-        phone: document.getElementById('phone').value.trim() || '',
-        message: document.getElementById('message').value.trim() || '',
-        recipient: document.getElementById('recipient').value.trim(),
-        sendTxt: document.getElementById('sendTxt').checked,
-        sendCsv: document.getElementById('sendCsv').checked
+        // Основная информация
+        taskNumber: document.getElementById('taskNumber').value.trim(),
+        customer: document.getElementById('customer').value.trim(),
+        
+        // Технические параметры
+        labelType: document.getElementById('labelType').value,
+        material: document.getElementById('material').value.trim(),
+        materialWidth: document.getElementById('materialWidth').value,
+        
+        // Дополнительная обработка
+        embossing: document.getElementById('embossing').value.trim(),
+        embossingWidth: document.getElementById('embossingWidth').value || 'Не указано',
+        congreve: document.querySelector('input[name="congreve"]:checked').value,
+        
+        // Лак
+        varnish: document.getElementById('varnish').value.trim(),
+        varnishType: varnishTypeField.value || 'Не указано',
+        additionalVarnish: document.getElementById('additionalVarnish').value.trim(),
+        additionalVarnishType: additionalVarnishTypeField.value || 'Не указано',
+        
+        // Ответственные
+        manager: document.getElementById('manager').value.trim(),
+        designerChatId: document.getElementById('designerChatId').value.trim(),
+        
+        // Метаданные
+        timestamp: new Date().toISOString(),
+        userData: userData ? {
+            id: userData.id,
+            username: userData.username
+        } : null
     };
     
-    // Валидация
-    if (!formData.name || !formData.email || !formData.recipient) {
-        showStatus('❌ Заполните все обязательные поля!', 'error');
-        setLoading(false);
+    // Валидация обязательных полей
+    const requiredFields = [
+        {field: 'taskNumber', name: '№ Задания'},
+        {field: 'customer', name: 'Заказчик'},
+        {field: 'labelType', name: 'Вид этикетки'},
+        {field: 'material', name: 'Материал'},
+        {field: 'materialWidth', name: 'Ширина материала'},
+        {field: 'manager', name: 'Менеджер'},
+        {field: 'designerChatId', name: 'ID дизайнера'}
+    ];
+    
+    for (const req of requiredFields) {
+        if (!formData[req.field]) {
+            showStatus(`❌ Заполните поле: ${req.name}`, 'error');
+            document.getElementById(req.field).focus();
+            return;
+        }
+    }
+    
+    // Валидация числовых полей
+    if (formData.materialWidth && isNaN(parseInt(formData.materialWidth))) {
+        showStatus('❌ Ширина материала должна быть числом', 'error');
         return;
     }
     
-    // Проверяем, выбран ли хотя бы один формат
-    if (!formData.sendTxt && !formData.sendCsv) {
-        showStatus('❌ Выберите хотя бы один формат файла!', 'error');
-        setLoading(false);
+    if (formData.embossingWidth && formData.embossingWidth !== 'Не указано' && 
+        isNaN(parseInt(formData.embossingWidth))) {
+        showStatus('❌ Ширина тиснения должна быть числом', 'error');
         return;
     }
     
@@ -65,35 +164,45 @@ form.addEventListener('submit', async function(e) {
         // Отправляем данные на Google Apps Script
         const response = await fetch(API_URL, {
             method: 'POST',
-            mode: 'no-cors', // Важно для Google Apps Script!
+            mode: 'no-cors', // Для Google Apps Script
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(formData)
         });
         
-        // Поскольку мы используем no-cors, мы не можем прочитать ответ напрямую
-        // Но мы можем показать сообщение об успехе
-        showStatus('✅ Данные успешно отправлены! Файлы отправлены получателю.', 'success');
+        // Поскольку мы используем no-cors, показываем успех
+        showStatus('✅ Задание успешно отправлено дизайнеру! Файлы созданы и отправлены.', 'success');
         
         // Очищаем форму через 3 секунды
         setTimeout(() => {
-            form.reset();
+            orderForm.reset();
             statusDiv.classList.add('hidden');
             
+            // Сбрасываем зависимые поля
+            embossingWidthField.disabled = true;
+            varnishTypeField.disabled = true;
+            additionalVarnishTypeField.disabled = true;
+            
+            // Автозаполняем менеджера снова
+            if (userData) {
+                const managerName = `${userData.first_name || ''} ${userData.last_name || ''}`.trim();
+                if (managerName) {
+                    document.getElementById('manager').value = managerName;
+                }
+            }
+            
             // Закрываем приложение через 4 секунды (только в Telegram)
-            if (tg) {
+            if (tg && tg.platform !== 'unknown') {
                 setTimeout(() => {
                     tg.close();
-                }, 1000);
+                }, 4000);
             }
         }, 3000);
         
     } catch (error) {
-        console.error('Ошибка:', error);
+        console.error('Ошибка отправки:', error);
         showStatus(`❌ Ошибка отправки: ${error.message}`, 'error');
-    } finally {
-        setLoading(false);
     }
 });
 
@@ -102,32 +211,63 @@ function showStatus(message, type = 'info') {
     statusDiv.textContent = message;
     statusDiv.className = `status ${type}`;
     statusDiv.classList.remove('hidden');
+    
+    // Прокручиваем к статусу
+    statusDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
-// Функция для управления состоянием загрузки
-function setLoading(isLoading) {
-    if (isLoading) {
-        submitBtn.disabled = true;
-        btnText.style.display = 'none';
-        loadingText.style.display = 'inline';
-    } else {
-        submitBtn.disabled = false;
-        btnText.style.display = 'inline';
-        loadingText.style.display = 'none';
-    }
-}
-
-// Автозаполнение для тестирования (удалите в продакшене)
+// Функция заполнения тестовых данных (для разработки)
 function fillTestData() {
-    // Только для локального тестирования
-    if (window.location.protocol === 'file:') {
-        document.getElementById('name').value = 'Иван Иванов';
-        document.getElementById('email').value = 'test@example.com';
-        document.getElementById('phone').value = '+7 (999) 123-45-67';
-        document.getElementById('message').value = 'Тестовое сообщение из формы';
-        document.getElementById('recipient').value = 'ВАШ_ID'; // Замените на ваш ID
+    if (!confirm('Заполнить форму тестовыми данными?')) return;
+    
+    document.getElementById('taskNumber').value = 'ORD-2024-001';
+    document.getElementById('customer').value = 'ООО "Продмаркет"';
+    document.getElementById('labelType').value = 'Банка для микроволновой печи';
+    document.getElementById('material').value = 'PP60 Полипропилен белый акриловый клей W05 Fuzhou';
+    document.getElementById('materialWidth').value = '120';
+    document.getElementById('embossing').value = 'Пленка тиснение SB dots';
+    embossingField.dispatchEvent(new Event('input'));
+    document.getElementById('embossingWidth').value = '115';
+    
+    document.querySelector('input[name="congreve"][value="Да"]').checked = true;
+    
+    document.getElementById('varnish').value = 'UV лак';
+    varnishField.dispatchEvent(new Event('input'));
+    document.getElementById('varnishType').value = 'Глянцевый';
+    
+    document.getElementById('additionalVarnish').value = 'Тактильный лак';
+    additionalVarnishField.dispatchEvent(new Event('input'));
+    document.getElementById('additionalVarnishType').value = 'Тактильный';
+    
+    if (!userData) {
+        document.getElementById('manager').value = 'Иванов Иван';
     }
+    
+    document.getElementById('designerChatId').value = '@designer_bot';
+    
+    showStatus('📝 Тестовые данные загружены. Проверьте и отправьте форму.', 'warning');
 }
 
-// Заполняем тестовые данные при загрузке (только для локального тестирования)
-window.addEventListener('DOMContentLoaded', fillTestData);
+// Добавляем горячие клавиши для разработки
+document.addEventListener('keydown', function(e) {
+    // Ctrl+Enter - отправить форму
+    if (e.ctrlKey && e.key === 'Enter') {
+        orderForm.requestSubmit();
+    }
+    // Ctrl+T - тестовые данные
+    if (e.ctrlKey && e.key === 't') {
+        e.preventDefault();
+        fillTestData();
+    }
+});
+
+// Инициализация при загрузке
+window.addEventListener('DOMContentLoaded', function() {
+    // Добавляем класс для Telegram
+    if (tg) {
+        document.body.classList.add('tg-mode');
+    }
+    
+    // Фокус на первое поле
+    document.getElementById('taskNumber').focus();
+});
