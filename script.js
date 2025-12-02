@@ -4,270 +4,496 @@ let userData = null;
 
 // Инициализируем Telegram Web App если он доступен
 if (window.Telegram && Telegram.WebApp) {
-    tg = Telegram.WebApp;
-    
-    // Инициализация
-    tg.ready();
-    tg.expand();
-    
-    // Получаем данные пользователя
-    userData = tg.initDataUnsafe?.user;
-    
-    // Настройка цветов
-    tg.setBackgroundColor('#667eea');
-    tg.setHeaderColor('#667eea');
-    
-    // Добавляем кнопку "Закрыть"
-    if (tg.platform !== 'unknown') {
-        tg.MainButton.setText('Закрыть').show();
-        tg.MainButton.onClick(() => {
-            tg.close();
-        });
+  tg = Telegram.WebApp;
+
+  // Инициализация
+  tg.ready();
+  tg.expand();
+
+  // Получаем данные пользователя
+  userData = tg.initDataUnsafe?.user;
+
+  // Настройка цветов
+  tg.setBackgroundColor("#667eea");
+  tg.setHeaderColor("#667eea");
+
+  // Добавляем кнопку "Закрыть"
+  if (tg.platform !== "unknown") {
+    tg.MainButton.setText("Закрыть").show();
+    tg.MainButton.onClick(() => {
+      tg.close();
+    });
+  }
+
+  // Автозаполнение менеджера из данных Telegram
+  if (userData) {
+    const managerName = `${userData.first_name || ""} ${
+      userData.last_name || ""
+    }`.trim();
+    if (managerName) {
+      document.getElementById("manager").value = managerName;
+      document.getElementById("manager").readOnly = true;
     }
-    
-    // Автозаполнение менеджера из данных Telegram
-    if (userData) {
-        const managerName = `${userData.first_name || ''} ${userData.last_name || ''}`.trim();
-        if (managerName) {
-            document.getElementById('manager').value = managerName;
-            document.getElementById('manager').readOnly = true;
-        }
-    }
+  }
 }
 
 // URL вашего Google Apps Script (ЗАМЕНИТЕ НА СВОЙ!)
-const API_URL = 'https://script.google.com/macros/s/AKfycbx_M9S7h5dh3aKZbyHqZ9ZJ_gXT1q40e6VnirI24HSk1Qk8NncugZkNHYJc-XbRi1kn/exec';
+const API_URL =
+  "https://script.google.com/macros/s/AKfycbwRupkHrzDiz_HBWPI66DOolUI0dWfrGl57yLk2IS4yQm8TmCX41ru_CRC6a2FDtEH6LA/exec";
 
 // Элементы формы
-const orderForm = document.getElementById('orderForm');
-const statusDiv = document.getElementById('status');
+const orderForm = document.getElementById("orderForm");
+const statusDiv = document.getElementById("status");
+// Новые элементы формы
+const circulationField = document.getElementById("circulation");
+const packagingField = document.getElementById("packaging");
+const labelingField = document.getElementById("labeling");
+const tagField = document.getElementById("tag");
+const packagingCirculationField = document.getElementById(
+  "packagingCirculation"
+);
+const palletField = document.getElementById("pallet");
+const palletTypeField = document.getElementById("palletType");
+const primeMaterialYes = document.querySelector(
+  'input[name="primeMaterial"][value="Да"]'
+);
+const primeMaterialNo = document.querySelector(
+  'input[name="primeMaterial"][value="Нет"]'
+);
+const dmsFinishYes = document.querySelector(
+  'input[name="dmsFinish"][value="Да"]'
+);
+const dmsFinishNo = document.querySelector(
+  'input[name="dmsFinish"][value="Нет"]'
+);
+const assemblyInfoField = document.getElementById("assemblyInfo");
+const glueLayerPrintYes = document.querySelector(
+  'input[name="glueLayerPrint"][value="Да"]'
+);
+const glueLayerPrintNo = document.querySelector(
+  'input[name="glueLayerPrint"][value="Нет"]'
+);
+const honestSignPrintYes = document.querySelector(
+  'input[name="honestSignPrint"][value="Да"]'
+);
+const honestSignPrintNo = document.querySelector(
+  'input[name="honestSignPrint"][value="Нет"]'
+);
 
 // Зависимые поля
-const embossingField = document.getElementById('embossing');
-const embossingWidthField = document.getElementById('embossingWidth');
-const varnishField = document.getElementById('varnish');
-const varnishTypeField = document.getElementById('varnishType');
-const additionalVarnishField = document.getElementById('additionalVarnish');
-const additionalVarnishTypeField = document.getElementById('additionalVarnishType');
+const embossingField = document.getElementById("embossing");
+const embossingWidthField = document.getElementById("embossingWidth");
+const laminationField = document.getElementById("lamination");
+const laminationWidthField = document.getElementById("laminationWidth");
+const varnishField = document.getElementById("varnish");
+const varnishTypeField = document.getElementById("varnishType");
+const additionalVarnishField = document.getElementById("additionalVarnish");
+const additionalVarnishTypeField = document.getElementById(
+  "additionalVarnishType"
+);
+const newStampCheckbox = document.getElementById("newStamp");
+const newStampFields = document.getElementById("newStampFields");
+const stampNumberField = document.getElementById("stampNumber");
+const stampGroovesField = document.getElementById("stampGrooves");
 
 // Логика зависимых полей
-embossingField.addEventListener('input', function() {
-    if (this.value.trim()) {
-        embossingWidthField.disabled = false;
-        embossingWidthField.placeholder = 'Введите ширину тиснения';
-    } else {
-        embossingWidthField.disabled = true;
-        embossingWidthField.value = '';
-        embossingWidthField.placeholder = 'Автоматически';
-    }
+embossingField.addEventListener("input", function () {
+  if (this.value.trim()) {
+    embossingWidthField.disabled = false;
+    embossingWidthField.placeholder = "Введите ширину тиснения";
+  } else {
+    embossingWidthField.disabled = true;
+    embossingWidthField.value = "";
+    embossingWidthField.placeholder = "Автоматически";
+  }
 });
 
-varnishField.addEventListener('input', function() {
-    if (this.value.trim()) {
-        varnishTypeField.disabled = false;
-    } else {
-        varnishTypeField.disabled = true;
-        varnishTypeField.value = '';
-    }
+laminationField.addEventListener("input", function () {
+  if (this.value.trim()) {
+    laminationWidthField.disabled = false;
+    laminationWidthField.placeholder = "Ширина ламинации";
+  } else {
+    laminationWidthField.disabled = true;
+    laminationWidthField.value = "";
+    laminationWidthField.placeholder = "Ширина";
+  }
 });
 
-additionalVarnishField.addEventListener('input', function() {
-    if (this.value.trim()) {
-        additionalVarnishTypeField.disabled = false;
-    } else {
-        additionalVarnishTypeField.disabled = true;
-        additionalVarnishTypeField.value = '';
-    }
+varnishField.addEventListener("input", function () {
+  if (this.value.trim()) {
+    varnishTypeField.disabled = false;
+  } else {
+    varnishTypeField.disabled = true;
+    varnishTypeField.value = "";
+  }
 });
 
-// Автоматическое заполнение ширины тиснения (если нужно)
-embossingWidthField.addEventListener('focus', function() {
-    if (!this.value && embossingField.value) {
-        // Можно добавить логику автоматического расчета
-        // Например: this.value = document.getElementById('materialWidth').value;
+additionalVarnishField.addEventListener("input", function () {
+  if (this.value.trim()) {
+    additionalVarnishTypeField.disabled = false;
+  } else {
+    additionalVarnishTypeField.disabled = true;
+    additionalVarnishTypeField.value = "";
+  }
+});
+
+// Логика "Новый штамп"
+newStampCheckbox.addEventListener("change", function () {
+  if (this.checked) {
+    // Блокируем основные поля штампа
+    stampNumberField.disabled = true;
+    stampGroovesField.disabled = true;
+
+    // Показываем дополнительные поля
+    newStampFields.style.display = "flex";
+
+    // Очищаем основные поля
+    stampNumberField.value = "";
+    stampGroovesField.value = "";
+  } else {
+    // Разблокируем основные поля
+    stampNumberField.disabled = false;
+    stampGroovesField.disabled = false;
+
+    // Скрываем дополнительные поля
+    newStampFields.style.display = "none";
+
+    // Очищаем дополнительные поля
+    document.getElementById("stampWidth").value = "";
+    document.getElementById("stampLength").value = "";
+    document.getElementById("stampGroovesNew").value = "";
+    document.getElementById("stampShaft").value = "";
+    document.getElementById("stampMounting").value = "";
+  }
+});
+
+// Автоматическое заполнение ширины тиснения/ламинации при фокусе
+embossingWidthField.addEventListener("focus", function () {
+  if (!this.value && embossingField.value) {
+    // Можно добавить логику автоматического расчета
+    // Например: this.value = document.getElementById('materialWidth').value;
+  }
+});
+
+laminationWidthField.addEventListener("focus", function () {
+  if (!this.value && laminationField.value) {
+    // Автоматически заполняем шириной материала
+    const materialWidth = document.getElementById("materialWidth").value;
+    if (materialWidth) {
+      this.value = materialWidth;
     }
+  }
 });
 
 // Обработка отправки формы
-orderForm.addEventListener('submit', async function(e) {
-    e.preventDefault();
-    
-    // Показываем статус загрузки
-    showStatus('📤 Отправка задания...', 'info');
-    
-    // Собираем данные формы
-    const formData = {
-        // Основная информация
-        taskNumber: document.getElementById('taskNumber').value.trim(),
-        customer: document.getElementById('customer').value.trim(),
-        
-        // Технические параметры
-        labelType: document.getElementById('labelType').value,
-        material: document.getElementById('material').value.trim(),
-        materialWidth: document.getElementById('materialWidth').value,
-        
-        // Дополнительная обработка
-        embossing: document.getElementById('embossing').value.trim(),
-        embossingWidth: document.getElementById('embossingWidth').value || 'Не указано',
-        congreve: document.querySelector('input[name="congreve"]:checked').value,
-        
-        // Лак
-        varnish: document.getElementById('varnish').value.trim(),
-        varnishType: varnishTypeField.value || 'Не указано',
-        additionalVarnish: document.getElementById('additionalVarnish').value.trim(),
-        additionalVarnishType: additionalVarnishTypeField.value || 'Не указано',
-        
-        // Ответственные
-        manager: document.getElementById('manager').value.trim(),
-        designerChatId: document.getElementById('designerChatId').value.trim(),
-        
-        // Метаданные
-        timestamp: new Date().toISOString(),
-        userData: userData ? {
-            id: userData.id,
-            username: userData.username
-        } : null
-    };
-    
-    // Валидация обязательных полей
-    const requiredFields = [
-        {field: 'taskNumber', name: '№ Задания'},
-        {field: 'customer', name: 'Заказчик'},
-        {field: 'labelType', name: 'Вид этикетки'},
-        {field: 'material', name: 'Материал'},
-        {field: 'materialWidth', name: 'Ширина материала'},
-        {field: 'manager', name: 'Менеджер'},
-        {field: 'designerChatId', name: 'ID дизайнера'}
-    ];
-    
-    for (const req of requiredFields) {
-        if (!formData[req.field]) {
-            showStatus(`❌ Заполните поле: ${req.name}`, 'error');
-            document.getElementById(req.field).focus();
-            return;
+orderForm.addEventListener("submit", async function (e) {
+  e.preventDefault();
+
+  // Показываем статус загрузки
+  showStatus("📤 Отправка задания...", "info");
+
+  // Собираем данные формы
+  const formData = {
+    // Основная информация
+    taskNumber: document.getElementById("taskNumber").value.trim(),
+    customer: document.getElementById("customer").value.trim(),
+    labelType: document.getElementById("labelType").value.trim(),
+
+    // Основной материал
+    material: document.getElementById("material").value.trim(),
+    materialWidth: document.getElementById("materialWidth").value,
+
+    // Дополнительные материалы
+    embossing: document.getElementById("embossing").value.trim(),
+    embossingWidth: document.getElementById("embossingWidth").value || "",
+    lamination: document.getElementById("lamination").value.trim(),
+    laminationWidth: document.getElementById("laminationWidth").value || "",
+
+    // Конгрев
+    congreve: document.querySelector('input[name="congreve"]:checked').value,
+
+    // Лак
+    varnish: document.getElementById("varnish").value.trim(),
+    varnishType: varnishTypeField.value || "",
+    additionalVarnish: document
+      .getElementById("additionalVarnish")
+      .value.trim(),
+    additionalVarnishType: additionalVarnishTypeField.value || "",
+
+    // Штамп
+    stampNumber: document.getElementById("stampNumber").value.trim(),
+    stampGrooves: document.getElementById("stampGrooves").value || "",
+    isNewStamp: newStampCheckbox.checked,
+    stampWidth: document.getElementById("stampWidth").value,
+    stampLength: document.getElementById("stampLength").value,
+    stampGroovesNew: document.getElementById("stampGroovesNew").value,
+    stampShaft: document.getElementById("stampShaft").value.trim(),
+    stampMounting: document.getElementById("stampMounting").value.trim(),
+
+    // Намотка
+    windingSchemeFace: document
+      .getElementById("windingSchemeFace")
+      .value.trim(),
+    windingSchemeBack: document
+      .getElementById("windingSchemeBack")
+      .value.trim(),
+    sleeve: document.getElementById("sleeve").value,
+    winding: document.getElementById("winding").value.trim(),
+
+    // Тираж и упаковка
+    circulation: document.getElementById("circulation").value,
+    packaging: document.getElementById("packaging").value.trim(),
+    labeling: document.getElementById("labeling").value.trim(),
+    tag: document.getElementById("tag").value.trim(),
+    packagingCirculation: document.getElementById("packagingCirculation").value,
+    pallet: document.getElementById("pallet").value,
+    palletType: document.getElementById("palletType").value.trim(),
+
+    // Технологические особенности
+    primeMaterial: document.querySelector('input[name="primeMaterial"]:checked')
+      .value,
+    dmsFinish: document.querySelector('input[name="dmsFinish"]:checked').value,
+    assemblyInfo: document.getElementById("assemblyInfo").value.trim(),
+    glueLayerPrint: document.querySelector(
+      'input[name="glueLayerPrint"]:checked'
+    ).value,
+    honestSignPrint: document.querySelector(
+      'input[name="honestSignPrint"]:checked'
+    ).value,
+
+    // Ответственные
+    manager: document.getElementById("manager").value.trim(),
+    designerChatId: document.getElementById("designerChatId").value.trim(),
+
+    // Метаданные
+    timestamp: new Date().toISOString(),
+    userData: userData
+      ? {
+          id: userData.id,
+          username: userData.username,
         }
+      : null,
+  };
+
+  // Валидация обязательных полей
+  const requiredFields = [
+    { field: "taskNumber", name: "№ Задания" },
+    { field: "customer", name: "Заказчик" },
+    { field: "labelType", name: "Вид этикетки" },
+    { field: "material", name: "Материал" },
+    { field: "materialWidth", name: "Ширина материала" },
+    { field: "manager", name: "Менеджер" },
+    { field: "designerChatId", name: "ID дизайнера" },
+    { field: "circulation", name: "Тираж" },
+  ];
+
+  for (const req of requiredFields) {
+    if (!formData[req.field]) {
+      showStatus(`❌ Заполните поле: ${req.name}`, "error");
+      document.getElementById(req.field).focus();
+      return;
     }
-    
-    // Валидация числовых полей
-    if (formData.materialWidth && isNaN(parseInt(formData.materialWidth))) {
-        showStatus('❌ Ширина материала должна быть числом', 'error');
+  }
+
+  // Валидация числовых полей
+  const numericFields = [
+    { field: "materialWidth", name: "Ширина материала" },
+    { field: "embossingWidth", name: "Ширина тиснения" },
+    { field: "laminationWidth", name: "Ширина ламинации" },
+    { field: "stampGrooves", name: "Ручьи штампа" },
+    { field: "stampWidth", name: "Ширина штампа" },
+    { field: "stampLength", name: "Длина штампа" },
+    { field: "stampGroovesNew", name: "Ручьи нового штампа" },
+  ];
+
+  for (const numField of numericFields) {
+    const value = formData[numField.field];
+    if (value && value !== "" && isNaN(parseInt(value))) {
+      showStatus(`❌ ${numField.name} должна быть числом`, "error");
+      return;
+    }
+  }
+
+  // Проверка: если выбран "Новый штамп", то должны быть заполнены его поля
+  if (formData.isNewStamp) {
+    const newStampFields = [
+      { field: "stampWidth", name: "Ширина нового штампа" },
+      { field: "stampLength", name: "Длина нового штампа" },
+      { field: "stampGroovesNew", name: "Ручьи нового штампа" },
+    ];
+
+    for (const field of newStampFields) {
+      if (!formData[field.field]) {
+        showStatus(`❌ Заполните поле: ${field.name}`, "error");
+        document.getElementById(field.field).focus();
         return;
+      }
     }
-    
-    if (formData.embossingWidth && formData.embossingWidth !== 'Не указано' && 
-        isNaN(parseInt(formData.embossingWidth))) {
-        showStatus('❌ Ширина тиснения должна быть числом', 'error');
-        return;
-    }
-    
-    try {
-        // Отправляем данные на Google Apps Script
-        const response = await fetch(API_URL, {
-            method: 'POST',
-            mode: 'no-cors', // Для Google Apps Script
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
-        });
-        
-        // Поскольку мы используем no-cors, показываем успех
-        showStatus('✅ Задание успешно отправлено дизайнеру! Файлы созданы и отправлены.', 'success');
-        
-        // Очищаем форму через 3 секунды
+  }
+
+  try {
+    // Отправляем данные на Google Apps Script
+    const response = await fetch(API_URL, {
+      method: "POST",
+      mode: "no-cors", // Для Google Apps Script
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+
+    // Поскольку мы используем no-cors, показываем успех
+    showStatus(
+      "✅ Задание успешно отправлено дизайнеру! Файлы созданы и отправлены.",
+      "success"
+    );
+
+    // Очищаем форму через 3 секунды
+    setTimeout(() => {
+      orderForm.reset();
+      statusDiv.classList.add("hidden");
+
+      // Сбрасываем зависимые поля
+      embossingWidthField.disabled = true;
+      laminationWidthField.disabled = true;
+      varnishTypeField.disabled = true;
+      additionalVarnishTypeField.disabled = true;
+
+      // Сбрасываем логику нового штампа
+      newStampCheckbox.checked = false;
+      newStampFields.style.display = "none";
+      stampNumberField.disabled = false;
+      stampGroovesField.disabled = false;
+
+      // Автозаполняем менеджера снова
+      if (userData) {
+        const managerName = `${userData.first_name || ""} ${
+          userData.last_name || ""
+        }`.trim();
+        if (managerName) {
+          document.getElementById("manager").value = managerName;
+        }
+      }
+
+      // Закрываем приложение через 4 секунды (только в Telegram)
+      if (tg && tg.platform !== "unknown") {
         setTimeout(() => {
-            orderForm.reset();
-            statusDiv.classList.add('hidden');
-            
-            // Сбрасываем зависимые поля
-            embossingWidthField.disabled = true;
-            varnishTypeField.disabled = true;
-            additionalVarnishTypeField.disabled = true;
-            
-            // Автозаполняем менеджера снова
-            if (userData) {
-                const managerName = `${userData.first_name || ''} ${userData.last_name || ''}`.trim();
-                if (managerName) {
-                    document.getElementById('manager').value = managerName;
-                }
-            }
-            
-            // Закрываем приложение через 4 секунды (только в Telegram)
-            if (tg && tg.platform !== 'unknown') {
-                setTimeout(() => {
-                    tg.close();
-                }, 4000);
-            }
-        }, 3000);
-        
-    } catch (error) {
-        console.error('Ошибка отправки:', error);
-        showStatus(`❌ Ошибка отправки: ${error.message}`, 'error');
-    }
+          tg.close();
+        }, 4000);
+      }
+    }, 3000);
+  } catch (error) {
+    console.error("Ошибка отправки:", error);
+    showStatus(`❌ Ошибка отправки: ${error.message}`, "error");
+  }
 });
 
 // Функция для показа статуса
-function showStatus(message, type = 'info') {
-    statusDiv.textContent = message;
-    statusDiv.className = `status ${type}`;
-    statusDiv.classList.remove('hidden');
-    
-    // Прокручиваем к статусу
-    statusDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+function showStatus(message, type = "info") {
+  statusDiv.textContent = message;
+  statusDiv.className = `status ${type}`;
+  statusDiv.classList.remove("hidden");
+
+  // Прокручиваем к статусу
+  statusDiv.scrollIntoView({ behavior: "smooth", block: "nearest" });
 }
 
 // Функция заполнения тестовых данных (для разработки)
 function fillTestData() {
-    if (!confirm('Заполнить форму тестовыми данными?')) return;
-    
-    document.getElementById('taskNumber').value = 'ORD-2024-001';
-    document.getElementById('customer').value = 'ООО "Продмаркет"';
-    document.getElementById('labelType').value = 'Банка для микроволновой печи';
-    document.getElementById('material').value = 'PP60 Полипропилен белый акриловый клей W05 Fuzhou';
-    document.getElementById('materialWidth').value = '120';
-    document.getElementById('embossing').value = 'Пленка тиснение SB dots';
-    embossingField.dispatchEvent(new Event('input'));
-    document.getElementById('embossingWidth').value = '115';
-    
-    document.querySelector('input[name="congreve"][value="Да"]').checked = true;
-    
-    document.getElementById('varnish').value = 'UV лак';
-    varnishField.dispatchEvent(new Event('input'));
-    document.getElementById('varnishType').value = 'Глянцевый';
-    
-    document.getElementById('additionalVarnish').value = 'Тактильный лак';
-    additionalVarnishField.dispatchEvent(new Event('input'));
-    document.getElementById('additionalVarnishType').value = 'Тактильный';
-    
-    if (!userData) {
-        document.getElementById('manager').value = 'Иванов Иван';
-    }
-    
-    document.getElementById('designerChatId').value = '@designer_bot';
-    
-    showStatus('📝 Тестовые данные загружены. Проверьте и отправьте форму.', 'warning');
+  if (!confirm("Заполнить форму тестовыми данными?")) return;
+
+  // Основная информация
+  document.getElementById("taskNumber").value = "ORD-2024-001";
+  document.getElementById("customer").value = 'ООО "Продмаркет"';
+  document.getElementById("labelType").value = "Банка для микроволновой печи";
+
+  // Основной материал
+  document.getElementById("material").value =
+    "PP60 Полипропилен белый акриловый клей W05 Fuzhou";
+  document.getElementById("materialWidth").value = "120";
+
+  // Дополнительные материалы
+  document.getElementById("embossing").value = "Пленка тиснение SB dots";
+  embossingField.dispatchEvent(new Event("input"));
+  document.getElementById("embossingWidth").value = "115";
+
+  document.getElementById("lamination").value = "Ламинация OPP глянцевая 20мк";
+  laminationField.dispatchEvent(new Event("input"));
+  document.getElementById("laminationWidth").value = "118";
+
+  // Конгрев
+  document.querySelector('input[name="congreve"][value="Да"]').checked = true;
+
+  // Лак
+  document.getElementById("varnish").value = "UV лак";
+  varnishField.dispatchEvent(new Event("input"));
+  document.getElementById("varnishType").value = "Глянцевый";
+
+  document.getElementById("additionalVarnish").value = "Тактильный лак";
+  additionalVarnishField.dispatchEvent(new Event("input"));
+  document.getElementById("additionalVarnishType").value = "Тактильный";
+
+  // Штамп
+  document.getElementById("stampNumber").value = "ST-4521";
+  document.getElementById("stampGrooves").value = "8";
+
+  // НЕ включаем новый штамп по умолчанию
+
+  // Намотка
+  document.getElementById("windingSchemeFace").value = "Лицом внутрь";
+  document.getElementById("windingSchemeBack").value = "На внешнюю сторону";
+  document.getElementById("sleeve").value = "46 мм";
+  document.getElementById("winding").value = "2000 метров";
+
+  // Тираж и упаковка
+  document.getElementById("circulation").value = "50000";
+  document.getElementById("packaging").value = "Коробка 500 шт.";
+  document.getElementById("labeling").value = "Автоматическая";
+  document.getElementById("tag").value = "Есть";
+  document.getElementById("packagingCirculation").value = "100";
+  document.getElementById("pallet").value = "2";
+  document.getElementById("palletType").value = "Европаллет";
+
+  // Технологические особенности
+  primeMaterialNo.checked = true;
+  dmsFinishNo.checked = true;
+  document.getElementById("assemblyInfo").value =
+    "Сборка в 2 смены. Контроль качества каждые 1000 шт.";
+  glueLayerPrintNo.checked = true;
+  honestSignPrintYes.checked = true;
+
+  // Ответственные
+  if (!userData) {
+    document.getElementById("manager").value = "Иванов Иван";
+  }
+  document.getElementById("designerChatId").value = "@designer_bot";
+
+  showStatus(
+    "📝 Тестовые данные загружены. Проверьте и отправьте форму.",
+    "warning"
+  );
 }
 
 // Добавляем горячие клавиши для разработки
-document.addEventListener('keydown', function(e) {
-    // Ctrl+Enter - отправить форму
-    if (e.ctrlKey && e.key === 'Enter') {
-        orderForm.requestSubmit();
-    }
-    // Ctrl+T - тестовые данные
-    if (e.ctrlKey && e.key === 't') {
-        e.preventDefault();
-        fillTestData();
-    }
+document.addEventListener("keydown", function (e) {
+  // Ctrl+Enter - отправить форму
+  if (e.ctrlKey && e.key === "Enter") {
+    orderForm.requestSubmit();
+  }
+  // Ctrl+T - тестовые данные
+  if (e.ctrlKey && e.key === "t") {
+    e.preventDefault();
+    fillTestData();
+  }
 });
 
 // Инициализация при загрузке
-window.addEventListener('DOMContentLoaded', function() {
-    // Добавляем класс для Telegram
-    if (tg) {
-        document.body.classList.add('tg-mode');
-    }
-    
-    // Фокус на первое поле
-    document.getElementById('taskNumber').focus();
+window.addEventListener("DOMContentLoaded", function () {
+  // Добавляем класс для Telegram
+  if (tg) {
+    document.body.classList.add("tg-mode");
+  }
+
+  // Фокус на первое поле
+  document.getElementById("taskNumber").focus();
 });
