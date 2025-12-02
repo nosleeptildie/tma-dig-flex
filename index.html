@@ -15,23 +15,17 @@
         </div>
 
         <form id="orderForm">
-            <!-- 1. № Задания -->
+            <!-- 1-2. № Задания и Заказчик на одной строке -->
             <div class="form-section">
                 <div class="section-title">Основная информация</div>
                 <div class="form-row">
-                    <div class="form-group full-width">
+                    <div class="form-group half-width">
                         <label for="taskNumber">1. № Задания *</label>
                         <input type="text" id="taskNumber" 
                                placeholder="Введите номер задания ИЗ ОТГРУЗОК"
                                required>
                     </div>
-                </div>
-            </div>
-
-            <!-- 2. Заказчик -->
-            <div class="form-section">
-                <div class="form-row">
-                    <div class="form-group full-width">
+                    <div class="form-group half-width">
                         <label for="customer">2. Заказчик *</label>
                         <input type="text" id="customer" 
                                placeholder="Введите наименование заказчика"
@@ -40,28 +34,22 @@
                 </div>
             </div>
 
-            <!-- 3-5. Технические параметры -->
+            <!-- 3. Вид этикетки -->
             <div class="form-section">
-                <div class="section-title">Технические параметры</div>
-                
-                <!-- 3. Вид этикетки -->
                 <div class="form-row">
                     <div class="form-group full-width">
                         <label for="labelType">3. Вид этикетки *</label>
-                        <select id="labelType" required>
-                            <option value="" disabled selected>Выберите вид этикетки</option>
-                            <option value="Банка для микроволновой печи">Банка для микроволновой печи</option>
-                            <option value="Бутылка ПЭТ">Бутылка ПЭТ</option>
-                            <option value="Гибкая упаковка">Гибкая упаковка</option>
-                            <option value="Самоклеящаяся этикетка">Самоклеящаяся этикетка</option>
-                            <option value="Термоэтикетка">Термоэтикетка</option>
-                            <option value="Винная этикетка">Винная этикетка</option>
-                            <option value="Другое">Другое</option>
-                        </select>
+                        <input type="text" id="labelType" 
+                               placeholder="Банка для микроволновой печи"
+                               required>
                     </div>
                 </div>
+            </div>
 
-                <!-- 4-5. Материал и Ширина материала -->
+            <!-- 4-5. Основной материал -->
+            <div class="form-section">
+                <div class="section-title">ОСНОВНОЙ МАТЕРИАЛ</div>
+                
                 <div class="form-row">
                     <div class="form-group half-width">
                         <label for="material">4. Материал *</label>
@@ -80,8 +68,9 @@
 
             <!-- 6-7. Тиснение -->
             <div class="form-section">
-                <div class="section-title">Дополнительная обработка</div>
+                <div class="section-title">ДОПОЛНИТЕЛЬНЫЕ МАТЕРИАЛЫ</div>
                 
+                <!-- Тиснение -->
                 <div class="form-row">
                     <div class="form-group half-width">
                         <label for="embossing">6. Тиснение</label>
@@ -96,28 +85,46 @@
                     </div>
                 </div>
 
-                <!-- 8. Конгрев -->
+                <!-- Ламинация -->
+                <div class="form-row">
+                    <div class="form-group half-width">
+                        <label for="lamination">Ламинация</label>
+                        <input type="text" id="lamination" 
+                               placeholder="Тип ламинации">
+                    </div>
+                    <div class="form-group half-width">
+                        <label for="laminationWidth">Ширина ламинации (мм)</label>
+                        <input type="number" id="laminationWidth" 
+                               placeholder="Ширина"
+                               disabled>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 8. Конгрев -->
+            <div class="form-section">
+                <div class="section-title">Конгрев</div>
                 <div class="form-row">
                     <div class="form-group full-width">
                         <label for="congreve">8. Конгрев</label>
                         <div class="radio-group">
                             <label class="radio-label">
                                 <input type="radio" name="congreve" value="Да" checked>
-                                <span class="radio-custom"></span>
-                                Да
+                                <span class="radio-text">Да</span>
                             </label>
                             <label class="radio-label">
                                 <input type="radio" name="congreve" value="Нет">
-                                <span class="radio-custom"></span>
-                                Нет
+                                <span class="radio-text">Нет</span>
                             </label>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- 9-10. Лак -->
+            <!-- 9-12. Лак -->
             <div class="form-section">
+                <div class="section-title">Лакировка</div>
+                
                 <div class="form-row">
                     <div class="form-group half-width">
                         <label for="varnish">9. Лак</label>
@@ -137,7 +144,7 @@
                     </div>
                 </div>
 
-                <!-- 11-12. Доп. лак -->
+                <!-- Доп. лак -->
                 <div class="form-row">
                     <div class="form-group half-width">
                         <label for="additionalVarnish">11. Доп. лак</label>
@@ -154,6 +161,235 @@
                             <option value="Голографический">Голографический</option>
                             <option value="Другой">Другой</option>
                         </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Штамп -->
+            <div class="form-section">
+                <div class="section-title">ШТАМП</div>
+                
+                <!-- Первая строка: № штампа, Ручьи, Новый штамп -->
+                <div class="form-row">
+                    <div class="form-group third-width">
+                        <label for="stampNumber">№ штампа</label>
+                        <input type="text" id="stampNumber" 
+                               placeholder="Номер штампа">
+                    </div>
+                    <div class="form-group third-width">
+                        <label for="stampGrooves">Ручьи</label>
+                        <input type="number" id="stampGrooves" 
+                               placeholder="Количество"
+                               disabled>
+                    </div>
+                    <div class="form-group third-width">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="newStamp">
+                            <span class="checkbox-text">Новый штамп</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Поля для нового штампа (скрыты по умолчанию) -->
+                <div id="newStampFields" class="form-row" style="display: none;">
+                    <div class="form-group">
+                        <label for="stampWidth">Ширина (мм)</label>
+                        <input type="number" id="stampWidth" 
+                               placeholder="Ширина штампа">
+                    </div>
+                    <div class="form-group">
+                        <label for="stampLength">Длина (мм)</label>
+                        <input type="number" id="stampLength" 
+                               placeholder="Длина штампа">
+                    </div>
+                    <div class="form-group">
+                        <label for="stampGroovesNew">Ручьи</label>
+                        <input type="number" id="stampGroovesNew" 
+                               placeholder="Количество">
+                    </div>
+                    <div class="form-group">
+                        <label for="stampShaft">Вал</label>
+                        <input type="text" id="stampShaft" 
+                               placeholder="Тип вала">
+                    </div>
+                    <div class="form-group">
+                        <label for="stampMounting">М/э</label>
+                        <input type="text" id="stampMounting" 
+                               placeholder="Монтаж">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Намотка -->
+            <div class="form-section">
+                <div class="section-title">НАМОТКА</div>
+                
+                <!-- Схемы намотки -->
+                <div class="form-row">
+                    <div class="form-group half-width">
+                        <label for="windingSchemeFace">Схема намотки (лицо)</label>
+                        <input type="text" id="windingSchemeFace" 
+                               placeholder="Схема для лицевой стороны">
+                    </div>
+                    <div class="form-group half-width">
+                        <label for="windingSchemeBack">Схема намотки (оборот)</label>
+                        <input type="text" id="windingSchemeBack" 
+                               placeholder="Схема для оборотной стороны">
+                    </div>
+                </div>
+
+                <!-- Втулка и намотка -->
+                <div class="form-row">
+                    <div class="form-group half-width">
+                        <label for="sleeve">Втулка</label>
+                        <select id="sleeve">
+                            <option value="" selected>Выберите втулку</option>
+                            <option value="45 мм">45 мм</option>
+                            <option value="46 мм">46 мм</option>
+                            <option value="75 мм">75 мм</option>
+                        </select>
+                    </div>
+                    <div class="form-group half-width">
+                        <label for="winding">Намотка</label>
+                        <input type="text" id="winding" 
+                               placeholder="Параметры намотки">
+                    </div>
+                </div>
+            </div>
+
+            <!-- ТИРАЖ И УПАКОВКА -->
+            <div class="form-section">
+                <div class="section-title">ТИРАЖ И УПАКОВКА</div>
+                
+                <!-- Тираж -->
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label for="circulation">Тираж (шт.) *</label>
+                        <input type="number" id="circulation" 
+                               placeholder="Введите количество штук"
+                               required>
+                    </div>
+                </div>
+
+                <!-- Упаковка и Этикеровка -->
+                <div class="form-row">
+                    <div class="form-group half-width">
+                        <label for="packaging">Упаковка</label>
+                        <input type="text" id="packaging" 
+                               placeholder="Вид упаковки">
+                    </div>
+                    <div class="form-group half-width">
+                        <label for="labeling">Этикеровка</label>
+                        <input type="text" id="labeling" 
+                               placeholder="Тип этикеровки">
+                    </div>
+                </div>
+
+                <!-- Ярлык и Тираж упаковки -->
+                <div class="form-row">
+                    <div class="form-group half-width">
+                        <label for="tag">Ярлык</label>
+                        <input type="text" id="tag" 
+                               placeholder="Наличие ярлыка">
+                    </div>
+                    <div class="form-group half-width">
+                        <label for="packagingCirculation">Тираж упаковки (шт.)</label>
+                        <input type="number" id="packagingCirculation" 
+                               placeholder="Количество упаковок">
+                    </div>
+                </div>
+
+                <!-- Паллет -->
+                <div class="form-row">
+                    <div class="form-group half-width">
+                        <label for="pallet">Паллет (шт.)</label>
+                        <input type="number" id="pallet" 
+                               placeholder="Количество паллет">
+                    </div>
+                    <div class="form-group half-width">
+                        <label for="palletType">Тип паллета</label>
+                        <input type="text" id="palletType" 
+                               placeholder="Европаллет, финпаллет">
+                    </div>
+                </div>
+            </div>
+
+            <!-- ТЕХНОЛОГИЧЕСКИЕ ОСОБЕННОСТИ -->
+            <div class="form-section">
+                <div class="section-title">ТЕХНОЛОГИЧЕСКИЕ ОСОБЕННОСТИ</div>
+                
+                <!-- Праймировать материал -->
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label for="primeMaterial">Праймировать материал</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="primeMaterial" value="Да">
+                                <span class="radio-text">Да</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="primeMaterial" value="Нет" checked>
+                                <span class="radio-text">Нет</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Отделка на DMS -->
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label for="dmsFinish">Отделка на DMS</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="dmsFinish" value="Да">
+                                <span class="radio-text">Да</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="dmsFinish" value="Нет" checked>
+                                <span class="radio-text">Нет</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Информация по сборкам -->
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label for="assemblyInfo">Информация по сборкам</label>
+                        <textarea id="assemblyInfo" rows="4" 
+                                  placeholder="Дополнительная информация по сборкам, монтажу и т.д."></textarea>
+                    </div>
+                </div>
+
+                <!-- Печать по клеевому слою -->
+                <div class="form-row">
+                    <div class="form-group half-width">
+                        <label for="glueLayerPrint">Печать по клеевому слою</label>
+                        <div class="radio-group compact">
+                            <label class="radio-label">
+                                <input type="radio" name="glueLayerPrint" value="Да">
+                                <span class="radio-text">Да</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="glueLayerPrint" value="Нет" checked>
+                                <span class="radio-text">Нет</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Печать честного знака на RHYGYAN -->
+                    <div class="form-group half-width">
+                        <label for="honestSignPrint">Печать честного знака на RHYGYAN</label>
+                        <div class="radio-group compact">
+                            <label class="radio-label">
+                                <input type="radio" name="honestSignPrint" value="Да">
+                                <span class="radio-text">Да</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="honestSignPrint" value="Нет" checked>
+                                <span class="radio-text">Нет</span>
+                            </label>
+                        </div>
                     </div>
                 </div>
             </div>
