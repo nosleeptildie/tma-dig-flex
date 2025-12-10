@@ -571,3 +571,144 @@ textarea {
         padding-left: 40px !important;
     }
 }
+/* Стили для раздела технолога */
+.technologist-section {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border: 2px dashed #adb5bd;
+    position: relative;
+}
+
+.technologist-section .section-title {
+    color: #495057;
+    border-bottom: 2px solid #adb5bd;
+}
+
+.section-badge {
+    display: inline-block;
+    background: #6c757d;
+    color: white;
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 12px;
+    margin-left: 15px;
+    font-weight: 600;
+    vertical-align: middle;
+}
+
+/* Информационный блок для технолога */
+.technologist-info {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    padding: 15px;
+    background: #e7f3ff;
+    border-radius: 8px;
+    border: 1px solid #b3d7ff;
+    margin-top: 20px;
+}
+
+.info-icon {
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.info-text {
+    flex: 1;
+    font-size: 14px;
+    color: #0056b3;
+    line-height: 1.5;
+}
+
+/* Стили для заблокированных полей */
+select:disabled,
+input:disabled {
+    background-color: #f5f5f5 !important;
+    color: #6c757d !important;
+    cursor: not-allowed !important;
+    border-color: #dee2e6 !important;
+    opacity: 0.7;
+}
+
+/* Иконка блокировки для полей технолога */
+.technologist-section .form-group {
+    position: relative;
+}
+
+.technologist-section .form-group::after {
+    content: "🔒";
+    position: absolute;
+    right: 15px;
+    top: 40px;
+    font-size: 16px;
+    opacity: 0.5;
+    z-index: 1;
+}
+
+.technologist-section select:disabled + .hint,
+.technologist-section input:disabled + .hint {
+    color: #6c757d;
+    font-weight: 500;
+}
+/* Стили для селектора дизайнеров */
+#designerSelect {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    font-size: 16px;
+    background-color: white;
+    cursor: pointer;
+    transition: border-color 0.3s;
+}
+
+#designerSelect:focus {
+    outline: none;
+    border-color: #4a6fa5;
+    box-shadow: 0 0 0 3px rgba(74, 111, 165, 0.1);
+}
+
+/* Стили для селекторов лаков */
+#varnish, #additionalVarnish {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    font-size: 16px;
+    background-color: white;
+    cursor: pointer;
+    transition: border-color 0.3s;
+}
+
+#varnish:focus, #additionalVarnish:focus {
+    outline: none;
+    border-color: #4a6fa5;
+    box-shadow: 0 0 0 3px rgba(74, 111, 165, 0.1);
+}
+
+/* Подсказки для селекторов */
+.select-hint {
+    font-size: 12px;
+    color: #6c757d;
+    margin-top: 5px;
+    display: block;
+}
+
+/* Группировка селекторов */
+.select-group {
+    display: flex;
+    gap: 10px;
+}
+
+.select-group select {
+    flex: 1;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    #designerSelect,
+    #varnish,
+    #additionalVarnish {
+        font-size: 16px;
+        padding: 16px;
+    }
+}
