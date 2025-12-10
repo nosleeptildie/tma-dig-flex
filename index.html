@@ -101,26 +101,6 @@
                 </div>
             </div>
 
-            <!-- 8. Конгрев -->
-            <div class="form-section">
-                <div class="section-title">Конгрев</div>
-                <div class="form-row">
-                    <div class="form-group full-width">
-                        <label for="congreve">8. Конгрев</label>
-                        <div class="radio-group">
-                            <label class="radio-label">
-                                <input type="radio" name="congreve" value="Да" checked>
-                                <span class="radio-text">Да</span>
-                            </label>
-                            <label class="radio-label">
-                                <input type="radio" name="congreve" value="Нет">
-                                <span class="radio-text">Нет</span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <!-- 9-12. Лак -->
             <div class="form-section">
                 <div class="section-title">Лакировка</div>
@@ -128,19 +108,22 @@
                 <div class="form-row">
                     <div class="form-group half-width">
                         <label for="varnish">9. Лак</label>
-                        <input type="text" id="varnish" 
-                               placeholder="Вид лака">
+                        <select id="varnish">
+                            <option value="" selected>Нет</option>
+                            <option value="UV лак">UV лак</option>
+                            <option value="Водный лак">Водный лак</option>
+                            <option value="Сольвентный лак">Сольвентный лак</option>
+                            <option value="Дисперсионный лак">Дисперсионный лак</option>
+                            <option value="Ламинация">Ламинация</option>
+                            <option value="Другой">Другой</option>
+                        </select>
                     </div>
                     <div class="form-group half-width">
                         <label for="varnishType">10. Вид лака</label>
-                        <select id="varnishType" disabled>
-                            <option value="" disabled selected>Выберите вид лака</option>
-                            <option value="Глянцевый">Глянцевый</option>
-                            <option value="Матовый">Матовый</option>
-                            <option value="Тактильный">Тактильный</option>
-                            <option value="Голографический">Голографический</option>
-                            <option value="Другой">Другой</option>
-                        </select>
+                        <input type="text" id="varnishType" 
+                               placeholder="Глянцевый, матовый, тактильный..."
+                               disabled>
+                        <div class="hint">Введите вид лака</div>
                     </div>
                 </div>
 
@@ -148,19 +131,22 @@
                 <div class="form-row">
                     <div class="form-group half-width">
                         <label for="additionalVarnish">11. Доп. лак</label>
-                        <input type="text" id="additionalVarnish" 
-                               placeholder="Дополнительный лак">
+                        <select id="additionalVarnish">
+                            <option value="" selected>Нет</option>
+                            <option value="UV лак">UV лак</option>
+                            <option value="Водный лак">Водный лак</option>
+                            <option value="Сольвентный лак">Сольвентный лак</option>
+                            <option value="Дисперсионный лак">Дисперсионный лак</option>
+                            <option value="Ламинация">Ламинация</option>
+                            <option value="Другой">Другой</option>
+                        </select>
                     </div>
                     <div class="form-group half-width">
                         <label for="additionalVarnishType">12. Вид доп. лака</label>
-                        <select id="additionalVarnishType" disabled>
-                            <option value="" disabled selected>Выберите вид лака</option>
-                            <option value="Глянцевый">Глянцевый</option>
-                            <option value="Матовый">Матовый</option>
-                            <option value="Тактильный">Тактильный</option>
-                            <option value="Голографический">Голографический</option>
-                            <option value="Другой">Другой</option>
-                        </select>
+                        <input type="text" id="additionalVarnishType" 
+                               placeholder="Глянцевый, матовый, тактильный..."
+                               disabled>
+                        <div class="hint">Введите вид дополнительного лака</div>
                     </div>
                 </div>
             </div>
@@ -220,7 +206,7 @@
                 </div>
             </div>
 
-            <!-- Намотка -->
+            <!-- Намотка (ОБНОВЛЕНО: селекторы вместо ручного ввода) -->
             <div class="form-section">
                 <div class="section-title">НАМОТКА</div>
                 
@@ -228,13 +214,23 @@
                 <div class="form-row">
                     <div class="form-group half-width">
                         <label for="windingSchemeFace">Схема намотки (лицо)</label>
-                        <input type="text" id="windingSchemeFace" 
-                               placeholder="Схема для лицевой стороны">
+                        <select id="windingSchemeFace">
+                            <option value="" selected>Выберите схему</option>
+                            <option value="Лицом внутрь">Лицом внутрь</option>
+                            <option value="Лицом наружу">Лицом наружу</option>
+                            <option value="По умолчанию">По умолчанию</option>
+                            <option value="Специфическая">Специфическая</option>
+                        </select>
                     </div>
                     <div class="form-group half-width">
                         <label for="windingSchemeBack">Схема намотки (оборот)</label>
-                        <input type="text" id="windingSchemeBack" 
-                               placeholder="Схема для оборотной стороны">
+                        <select id="windingSchemeBack">
+                            <option value="" selected>Выберите схему</option>
+                            <option value="Оборотной стороной внутрь">Оборотной стороной внутрь</option>
+                            <option value="Оборотной стороной наружу">Оборотной стороной наружу</option>
+                            <option value="По умолчанию">По умолчанию</option>
+                            <option value="Специфическая">Специфическая</option>
+                        </select>
                     </div>
                 </div>
 
@@ -257,7 +253,7 @@
                 </div>
             </div>
 
-            <!-- ТИРАЖ И УПАКОВКА -->
+            <!-- ТИРАЖ И УПАКОВКА (ОБНОВЛЕНО) -->
             <div class="form-section">
                 <div class="section-title">ТИРАЖ И УПАКОВКА</div>
                 
@@ -271,53 +267,109 @@
                     </div>
                 </div>
 
-                <!-- Упаковка и Этикеровка -->
+                <!-- Упаковка (селектор) и Этикеровка (радио) -->
                 <div class="form-row">
                     <div class="form-group half-width">
                         <label for="packaging">Упаковка</label>
-                        <input type="text" id="packaging" 
-                               placeholder="Вид упаковки">
+                        <select id="packaging">
+                            <option value="" selected>Выберите упаковку</option>
+                            <option value="Коробка 500 шт.">Коробка 500 шт.</option>
+                            <option value="Коробка 1000 шт.">Коробка 1000 шт.</option>
+                            <option value="Коробка 2000 шт.">Коробка 2000 шт.</option>
+                            <option value="Пакет 100 шт.">Пакет 100 шт.</option>
+                            <option value="Паллетная упаковка">Паллетная упаковка</option>
+                            <option value="Индивидуальная">Индивидуальная</option>
+                            <option value="Другая">Другая</option>
+                        </select>
                     </div>
                     <div class="form-group half-width">
                         <label for="labeling">Этикеровка</label>
-                        <input type="text" id="labeling" 
-                               placeholder="Тип этикеровки">
+                        <div class="radio-group compact">
+                            <label class="radio-label">
+                                <input type="radio" name="labeling" value="Автоматическая" checked>
+                                <span class="radio-text">Автоматическая</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="labeling" value="Ручная">
+                                <span class="radio-text">Ручная</span>
+                            </label>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Ярлык и Тираж упаковки -->
+                <!-- Ярлык (радио) и Тираж упаковки (радио) -->
                 <div class="form-row">
                     <div class="form-group half-width">
                         <label for="tag">Ярлык</label>
-                        <input type="text" id="tag" 
-                               placeholder="Наличие ярлыка">
+                        <div class="radio-group compact">
+                            <label class="radio-label">
+                                <input type="radio" name="tag" value="Гамма (наш)" checked>
+                                <span class="radio-text">Гамма (наш)</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="tag" value="Клиента">
+                                <span class="radio-text">Клиента</span>
+                            </label>
+                        </div>
                     </div>
                     <div class="form-group half-width">
                         <label for="packagingCirculation">Тираж упаковки (шт.)</label>
-                        <input type="number" id="packagingCirculation" 
-                               placeholder="Количество упаковок">
+                        <div class="radio-group compact">
+                            <label class="radio-label">
+                                <input type="radio" name="packagingCirculation" value="Строго по заявленному кол-ву" checked>
+                                <span class="radio-text">Строго по заявленному кол-ву</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="packagingCirculation" value="Возьмет больше">
+                                <span class="radio-text">Возьмет больше</span>
+                            </label>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Паллет -->
+                <!-- Паллет (селектор) -->
                 <div class="form-row">
                     <div class="form-group half-width">
-                        <label for="pallet">Паллет (шт.)</label>
-                        <input type="number" id="pallet" 
-                               placeholder="Количество паллет">
+                        <label for="pallet">Паллет</label>
+                        <select id="pallet">
+                            <option value="" selected>Выберите количество</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
                     </div>
-                    <div class="form-group half-width">
-                        <label for="palletType">Тип паллета</label>
-                        <input type="text" id="palletType" 
-                               placeholder="Европаллет, финпаллет">
-                    </div>
+                    <!-- УБИРАЕМ поле "Тип паллета" -->
                 </div>
             </div>
 
-            <!-- ТЕХНОЛОГИЧЕСКИЕ ОСОБЕННОСТИ -->
+            <!-- ТЕХНОЛОГИЧЕСКИЕ ОСОБЕННОСТИ (ОБНОВЛЕНО: добавлен Конгрев) -->
             <div class="form-section">
                 <div class="section-title">ТЕХНОЛОГИЧЕСКИЕ ОСОБЕННОСТИ</div>
                 
+                <!-- Конгрев (перемещен сюда) -->
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label for="congreve">8. Конгрев</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="congreve" value="Да" checked>
+                                <span class="radio-text">Да</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="congreve" value="Нет">
+                                <span class="radio-text">Нет</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Праймировать материал -->
                 <div class="form-row">
                     <div class="form-group full-width">
@@ -394,6 +446,59 @@
                 </div>
             </div>
 
+            <!-- ТЕХНОЛОГ -->
+            <div class="form-section technologist-section">
+                <div class="section-title">
+                    ТЕХНОЛОГ 
+                    <span class="section-badge">заполняется технологом</span>
+                </div>
+                
+                <!-- Печатная машина -->
+                <div class="form-row">
+                    <div class="form-group half-width">
+                        <label for="printingMachine">Печатная машина</label>
+                        <select id="printingMachine" disabled>
+                            <option value="" selected disabled>Выберите машину</option>
+                            <option value="BOBST">BOBST</option>
+                            <option value="MPS">MPS</option>
+                            <option value="OMET">OMET</option>
+                            <option value="DURST">DURST</option>
+                            <option value="GRAFOTRONIC">GRAFOTRONIC</option>
+                            <option value="Другое">Другое</option>
+                        </select>
+                        <div class="hint">Заполняет технолог</div>
+                    </div>
+                    
+                    <div class="form-group half-width">
+                        <label for="tapeType">Тип скотча</label>
+                        <input type="text" id="tapeType" 
+                               placeholder="Тип скотча"
+                               disabled>
+                        <div class="hint">Заполняет технолог</div>
+                    </div>
+                </div>
+
+                <!-- Материал форм -->
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label for="formMaterial">Материал форм</label>
+                        <input type="text" id="formMaterial" 
+                               placeholder="Материал печатных форм"
+                               disabled>
+                        <div class="hint">Заполняет технолог</div>
+                    </div>
+                </div>
+
+                <!-- Блок с информацией для технолога -->
+                <div class="technologist-info">
+                    <div class="info-icon">ℹ️</div>
+                    <div class="info-text">
+                        <strong>Информация для технолога:</strong> Эти поля заполняются технологом после получения заявки. 
+                        Менеджер не может их изменять.
+                    </div>
+                </div>
+            </div>
+
             <!-- 13-18. Ответственные лица -->
             <div class="form-section">
                 <div class="section-title">Ответственные лица</div>
@@ -434,11 +539,14 @@
                 <!-- Дизайнер -->
                 <div class="form-row">
                     <div class="form-group half-width">
-                        <label for="designerChatId">14. Дизайнер (ID чата) *</label>
-                        <input type="text" id="designerChatId" 
-                               placeholder="@username или 123456789"
-                               required>
-                        <div class="hint">ID чата для отправки задания</div>
+                        <label for="designerSelect">14. Дизайнер *</label>
+                        <select id="designerSelect" required>
+                            <option value="" disabled selected>Выберите дизайнера</option>
+                            <!-- Опции будут заполнены JavaScript -->
+                        </select>
+                        <!-- Скрытое поле для хранения ID дизайнера -->
+                        <input type="hidden" id="designerChatId" name="designerChatId">
+                        <div class="hint">Выберите дизайнера из списка</div>
                     </div>
                     <div class="form-group half-width">
                         <label for="designerPhone">18. Телефон дизайнера</label>
